@@ -43,6 +43,21 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCwLaNRutiz1cQGDZkul1shvZwa0mtWM2I",
+      authDomain: "udemy-d3-firebase-tutorial.firebaseapp.com",
+      databaseURL: "https://udemy-d3-firebase-tutorial.firebaseio.com",
+      projectId: "udemy-d3-firebase-tutorial",
+      storageBucket: "udemy-d3-firebase-tutorial.appspot.com",
+      messagingSenderId: "788568042807"
+    };
+    firebase.initializeApp(config);
+    const db = firebase.firestore();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="js/index.js"></script>

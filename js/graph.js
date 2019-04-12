@@ -29,14 +29,20 @@ const update = (data) => {
   const paths = graph.selectAll('path')
     .data(pie(data));
 
+  // handle the exit selection
+  paths.exit().remove();
+  
+  // handle the current DOM path updates
+  paths.attr('d', arcPath);
+
   paths.enter()
     .append('path')
       .attr('class', 'arc')
-      .attr('d', arcPath)
       .attr('stroke', '#fff')
       .attr('stroke-width', 3)
       .attr('fill', d => color(d.data.name) )
-
+      .transition().duration(750)
+        .attrTween("d", arcTweenEnter);
 }
 
 // data array and firestore
@@ -68,4 +74,13 @@ db.collection('expenses').onSnapshot(res => {
 
   update(data)
 
-})
+});
+
+const arcTweenEnter = (d) => {
+  var i = d3.interpolate(d.endAngle, d.startAngle);
+
+  return function(t){
+    d.startAngle = i(t);
+    return arcPath(d)
+  }
+}

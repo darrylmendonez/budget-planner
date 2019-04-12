@@ -4,7 +4,7 @@ const cent = { x: (dims.width / 2 + 5), y: (dims.height / 2 + 5) };
 const svg = d3.select('.canvas')
   .append('svg')
   .attr('width', dims.width + 150)
-  .attr('height', dims.height + 150);
+  .attr('height', dims.height + 50);
 
 const graph = svg.append('g')
   .attr('transform', `translate(${cent.x}, ${cent.y})`);
@@ -26,7 +26,18 @@ const legendGroup = svg.append('g')
 const legend = d3.legendColor()
   .shape('circle', )
   .shapePadding(10)
-  .scale(color);
+  .scale(color)
+
+const tip = d3.tip()
+  .attr('class', 'tip card')
+  .html(d => {
+    let content = `<div class="name">${d.data.name}</div>`;
+    content += `<div class="cost">${d.data.cost}</div>`;
+    content += `<div class="delete">Click slice to delete</div>`;
+    return content;
+  });
+
+graph.call(tip);
 
 // update function
 const update = (data) => {
@@ -65,10 +76,17 @@ const update = (data) => {
 
   // add events
   graph.selectAll('path')
-    .on('mouseover', handleMouseOver)
-    .on('mouseout', handleMouseOut)
+    .on('mouseover', (d, i, n) => {
+      tip.show(d, n[i]);
+      handleMouseOver(d, i, n);
+    })
+    .on('mouseout', (d, i, n) => {
+      tip.hide();
+      handleMouseOut(d, i, n);
+    })
     .on('click', handleClick)
-}
+
+};
 
 // data array and firestore
 var data = [];
